@@ -2,7 +2,13 @@
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+	getAuth,
+	signInWithPopup,
+	GoogleAuthProvider,
+	signInWithRedirect,
+	createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -18,17 +24,29 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 // creates instance
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 // sets up the provedr
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
 	prompt: "select_account",
 });
 // singleton for all auth
 export const auth = getAuth();
-export const signInWithGooglePopUp = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopUp = () =>
+	signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+	signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
-export const createUserFromAuth = async (userAuthObj) => {
+
+export const createAuthenticatedUserWithEmail = async (email, password) => {
+	if (!email || !password) return;
+	return await createUserWithEmailAndPassword(auth, email, password);
+};
+export const createUserFromAuth = async (
+	userAuthObj,
+	additionalUserInformation = {}
+) => {
+	if (!userAuthObj) return;
 	//create a ref to doc with the uid
 	const userDocRef = doc(db, "users", userAuthObj.uid);
 	// Perform a get on that ref. - we have ref but havent commited
@@ -42,6 +60,7 @@ export const createUserFromAuth = async (userAuthObj) => {
 				displayName,
 				createdAt,
 				email,
+				...additionalUserInformation,
 			});
 		} catch (error) {
 			console.log(`firebase failed to create user: ${error}`);
