@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import {
-	createAuthenticatedUserWithEmail,
 	createUserFromAuth,
 	signInWithGooglePopUp,
 	SignAuthenticatedUserWithEmail,
@@ -25,15 +24,13 @@ const SignInForm = () => {
 
 	const handleFormChange = (event) => {
 		const { name, value } = event.target;
-
 		setFormFields({ ...formFields, [name]: value });
 	};
 
 	const handleOnFormSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			const response = await SignAuthenticatedUserWithEmail(email, password);
-			console.log(response);
+			const { user } = await SignAuthenticatedUserWithEmail(email, password);
 			resetFormFields();
 		} catch (error) {
 			console.log(`error: ${error}`);
@@ -43,7 +40,6 @@ const SignInForm = () => {
 	const logInWithGoogle = async () => {
 		// we get back an auth object and pull just user portion
 		const { user } = await signInWithGooglePopUp();
-		await createUserFromAuth(user);
 	};
 
 	return (

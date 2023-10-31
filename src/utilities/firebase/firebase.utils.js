@@ -9,6 +9,8 @@ import {
 	signInWithRedirect,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	signOut,
+	onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -51,7 +53,11 @@ export const SignAuthenticatedUserWithEmail = async (email, password) => {
 	return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const createUserFromAuth = async (
+export const signOutUser = async () => signOut(auth);
+export const onAuthStateChangeListener = (callback) => {
+	onAuthStateChanged(auth, callback);
+};
+export const createUserDocumentFromAuth = async (
 	userAuthObj,
 	additionalUserInformation = {}
 ) => {

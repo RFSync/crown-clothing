@@ -1,9 +1,6 @@
 import React from "react";
-import { useState } from "react";
-import {
-	createAuthenticatedUserWithEmail,
-	createUserFromAuth,
-} from "../../utilities/firebase/firebase.utils";
+import { useState, useContext } from "react";
+import { createAuthenticatedUserWithEmail } from "../../utilities/firebase/firebase.utils";
 import FormInput from "../form-input/FormInput.component";
 import "./sign-up-form.styles.scss";
 import Button from "../button/Button.component";
@@ -25,7 +22,6 @@ const SignUpForm = () => {
 
 	const handleFormChange = (event) => {
 		const { name, value } = event.target;
-
 		setFormFields({ ...formFields, [name]: value });
 	};
 
@@ -37,7 +33,6 @@ const SignUpForm = () => {
 		}
 		try {
 			const { user } = await createAuthenticatedUserWithEmail(email, password);
-			await createUserFromAuth(user);
 			resetFormFields();
 		} catch (error) {
 			console.log(`error: ${error}`);
