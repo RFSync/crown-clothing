@@ -47,7 +47,7 @@ const clearCartItem = (cart, itemToRemove) => {
 };
 
 export const CartProvider = ({ children }) => {
-	const [isCartOpen, setIsCartOpen] = useState([]);
+	const [isCartOpen, setIsCartOpen] = useState(false);
 	const [cart, setCart] = useState([]);
 	const [cartCount, setCartCount] = useState(0);
 	const [total, setTotal] = useState(0);
