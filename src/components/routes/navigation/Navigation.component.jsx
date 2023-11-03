@@ -8,7 +8,7 @@ import {
 	NavLink,
 } from "./navigation.styles.jsx";
 import CartIcon from "../../cart-icon/CartIcon.component";
-import { UserContext } from "../../../contexts/user..context";
+import { UserContext } from "../../../contexts/user.context";
 import { CartContext } from "../../../contexts/cart.context";
 import { signOutUser } from "../../../utilities/firebase/firebase.utils";
 import CartDropdown from "../../cart-dropdown/CartDropdown.component";
