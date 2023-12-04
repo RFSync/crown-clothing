@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./category.styles.scss";
 import { useParams } from "react-router";
 import ProductCard from "../../product-card/ProductCard.component";
