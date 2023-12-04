@@ -1,14 +1,21 @@
 import { compose, legacy_createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import { rootReducer } from "./root-reducer";
-import { Logger } from "sass";
 import { persistStore } from "redux-persist";
 import persistReducer from "redux-persist/es/persistReducer";
 import storage from "redux-persist/lib/storage";
-import { userReducer } from "./user/user.reducer";
 
-const middleWares = [logger];
-const composeEnhancers = compose(applyMiddleware(...middleWares));
+const middleWares = [process.env.NODE_ENV !== "production" && logger].filter(
+	Boolean
+);
+// allows redux extension to connect in dev
+const composeEnhancer =
+	(process.env.NODE_ENV !== "production" &&
+		window &&
+		window.__REDUX_DEVTOOLS_EXTENSION__) ||
+	compose;
+
+const composeEnhancers = composeEnhancer(applyMiddleware(...middleWares));
 
 const persistConfig = {
 	key: "root",
